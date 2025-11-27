@@ -31,45 +31,73 @@ function Activities() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading activities...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner-border loading-spinner text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-3 text-muted">Loading activities...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="alert alert-danger" role="alert">
+          <h4 className="alert-heading">Error Loading Activities</h4>
+          <p className="error-message">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mt-4">
-      <h2>Activities</h2>
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>User</th>
-              <th>Activity Type</th>
-              <th>Duration (min)</th>
-              <th>Distance (km)</th>
-              <th>Calories</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {activities.length > 0 ? (
-              activities.map(activity => (
-                <tr key={activity.id}>
-                  <td>{activity.id}</td>
-                  <td>{activity.user}</td>
-                  <td>{activity.activity_type}</td>
-                  <td>{activity.duration}</td>
-                  <td>{activity.distance}</td>
-                  <td>{activity.calories}</td>
-                  <td>{new Date(activity.date).toLocaleDateString()}</td>
+    <div className="page-container">
+      <div className="container">
+        <h2 className="page-heading">🏃 Activities Log</h2>
+        <div className="table-container">
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Activity Type</th>
+                  <th>Duration (min)</th>
+                  <th>Distance (km)</th>
+                  <th>Calories</th>
+                  <th>Date</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center">No activities found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {activities.length > 0 ? (
+                  activities.map(activity => (
+                    <tr key={activity.id}>
+                      <td><span className="badge bg-secondary">{activity.id}</span></td>
+                      <td><strong>{activity.user}</strong></td>
+                      <td><span className="badge bg-success">{activity.activity_type}</span></td>
+                      <td>{activity.duration} min</td>
+                      <td>{activity.distance} km</td>
+                      <td><span className="badge bg-warning text-dark">{activity.calories} cal</span></td>
+                      <td>{new Date(activity.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center text-muted py-4">
+                      <p className="mb-0">No activities found</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="mt-3 text-muted">
+          <small>Total Activities: <strong>{activities.length}</strong></small>
+        </div>
       </div>
     </div>
   );

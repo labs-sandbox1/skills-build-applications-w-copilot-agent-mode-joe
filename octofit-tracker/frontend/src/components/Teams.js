@@ -31,39 +31,67 @@ function Teams() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading teams...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner-border loading-spinner text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-3 text-muted">Loading teams...</p>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="alert alert-danger" role="alert">
+          <h4 className="alert-heading">Error Loading Teams</h4>
+          <p className="error-message">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mt-4">
-      <h2>Teams</h2>
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.length > 0 ? (
-              teams.map(team => (
-                <tr key={team.id}>
-                  <td>{team.id}</td>
-                  <td>{team.name}</td>
-                  <td>{team.description}</td>
-                  <td>{new Date(team.created_at).toLocaleDateString()}</td>
+    <div className="page-container">
+      <div className="container">
+        <h2 className="page-heading">🤝 Teams</h2>
+        <div className="table-container">
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Team Name</th>
+                  <th>Description</th>
+                  <th>Created At</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center">No teams found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {teams.length > 0 ? (
+                  teams.map(team => (
+                    <tr key={team.id}>
+                      <td><span className="badge bg-secondary">{team.id}</span></td>
+                      <td><strong>{team.name}</strong></td>
+                      <td>{team.description || <em className="text-muted">No description</em>}</td>
+                      <td>{new Date(team.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center text-muted py-4">
+                      <p className="mb-0">No teams found</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="mt-3 text-muted">
+          <small>Total Teams: <strong>{teams.length}</strong></small>
+        </div>
       </div>
     </div>
   );
