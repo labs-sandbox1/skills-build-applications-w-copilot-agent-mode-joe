@@ -13,7 +13,10 @@ function App() {
       <div className="App">
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
           <div className="container-fluid">
-            <Link className="navbar-brand" to="/">🏋️ OctoFit Tracker</Link>
+            <Link className="navbar-brand" to="/">
+              <img src="/octofitapp-small.png" alt="OctoFit Logo" className="navbar-logo" />
+              OctoFit Tracker
+            </Link>
             <button 
               className="navbar-toggler" 
               type="button" 
